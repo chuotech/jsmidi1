@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <title>MIDI Analyzer Player</title>
+
+    <script src="https://unpkg.com/tone@14.8.49/build/Tone.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tonejs/midi/build/Midi.js"></script>
+
+    <style>
+
+        body{
+            font-family: monospace;
+            background:#111;
+            color:white;
+            padding:30px;
+        }
+
+        button{
+            padding:10px 20px;
+            font-size:16px;
+            margin-bottom:20px;
+        }
+
+        .note{
+            padding:4px 0;
+        }
+
+        .current{
+            color:#00ff88;
+            font-weight:bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>MIDI Analyzer</h1>
+
+<button onclick="playMidi()">Play</button>
+
+<h2>Detected Scale</h2>
+<div id="scale">loading...</div>
+
+<h2>Now Playing</h2>
+<div id="currentNote">-</div>
+
+<h2>Interval</h2>
+<div id="interval">-</div>
+
+<h2>Live Notes</h2>
+<div id="liveNotes"></div>
+
+<script>
+
+    let analysis
+    let synth
+    let part
+
+    const MAX_VISIBLE = 30
+
+    async function loadData(){
+
+        const analysisResponse = await fetch("analysis.json")
+        analysis = await analysisResponse.json()
+
+        document.getElementById("scale").innerText =
+            analysis.scale.root + " " + analysis.scale.scale
+
+    }
+
+    function addLiveNote(noteName, intervalText){
+
+        const container = document.getElementById("liveNotes")
+
+        const div = document.createElement("div")
+        div.className = "note current"
+
+        div.innerText = noteName + "  |  " + intervalText
+
+        container.prepend(div)
+
+        // remove highlight from previous
+        const notes = container.querySelectorAll(".note")
+        notes.forEach((n,i)=>{
+            if(i !== 0) n.classList.remove("current")
+        })
+
+        // limit visible notes
+        if(notes.length > MAX_VISIBLE){
+            container.removeChild(container.lastChild)
+        }
+
+    }
+
+    async function playMidi(){
+
+        await Tone.start()
+
+        Tone.Transport.stop()
+        Tone.Transport.cancel()
+
+        synth = new Tone.PolySynth(Tone.Synth,{
+            maxPolyphony:64
+        }).toDestination()
+
+        const events = analysis.notes.map((note,i)=>({
+            time: note.start,
+            pitch: note.pitch,
+            duration: note.duration,
+            name: note.name,
+            index: i
+        }))
+
+        part = new Tone.Part((time, noteData)=>{
+
+            synth.triggerAttackRelease(
+                Tone.Frequency(noteData.pitch,"midi"),
+                noteData.duration,
+                time
+            )
+
+            const i = noteData.index
+
+            document.getElementById("currentNote").innerText =
+                noteData.name
+
+            let intervalText = "-"
+
+            if(analysis.intervals[i]){
+                intervalText =
+                    analysis.intervals[i].semitones + " semitones"
+
+                document.getElementById("interval").innerText =
+                    intervalText
+            }
+
+            addLiveNote(noteData.name, intervalText)
+
+        }, events)
+
+        part.start(0)
+
+        Tone.Transport.start()
+
+    }
+
+    loadData()
+
+</script>
+
+</body>
+</html>

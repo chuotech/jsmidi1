@@ -1,12 +1,14 @@
-// console.log('Happy developing ✨')
 "use strict";
-import pkg from "@tonejs/midi"
-const { Midi } = pkg
 
-import fs from "fs"
+import pkg from "@tonejs/midi";
+const { Midi } = pkg;
 
-const midiData = fs.readFileSync("samples/vincent_type_beat.mid")
-const midi = new Midi(midiData)
+import fs from "fs";
+
+// load midi file
+const midiData = fs.readFileSync("samples/vincent_type_beat.mid");
+const midi = new Midi(midiData);
+
 const NOTE_NAMES = [
     "C","C#","D","D#","E","F",
     "F#","G","G#","A","A#","B"
@@ -20,6 +22,7 @@ const SCALES = {
 let notes = [];
 let intervals = [];
 
+// collect notes
 midi.tracks.forEach((track) => {
     track.notes.forEach(note => {
         notes.push({
@@ -33,20 +36,39 @@ midi.tracks.forEach((track) => {
     });
 });
 
+// ✅ IMPORTANT: sort by time
+notes.sort((a, b) => a.start - b.start);
+
+// interval analysis (ALWAYS sets type)
 for (let i = 0; i < notes.length - 1; i++) {
-    const diff = notes[i+1].pitch - notes[i].pitch;
+
+    const diff = notes[i + 1].pitch - notes[i].pitch;
+    const absDiff = Math.abs(diff);
+
+    let motionType;
+
+    if (absDiff === 0) {
+        motionType = "repeat";
+    } else if (absDiff <= 2) {
+        motionType = "step";
+    } else {
+        motionType = "jump";
+    }
 
     intervals.push({
         from: notes[i].name,
-        to: notes[i+1].name,
+        to: notes[i + 1].name,
         semitones: diff,
-        intervalClass: Math.abs(diff) % 12
+        intervalClass: absDiff % 12,
+        type: motionType
     });
 }
 
+// scale detection
 const pitchClasses = [...new Set(notes.map(n => n.pitchClass))];
 
 function detectScale(pitchClasses) {
+
     let bestMatch = null;
     let bestScore = -1;
 
@@ -55,7 +77,9 @@ function detectScale(pitchClasses) {
 
             const scaleNotes = pattern.map(i => (i + root) % 12);
 
-            let score = pitchClasses.filter(pc => scaleNotes.includes(pc)).length;
+            let score = pitchClasses.filter(pc =>
+                scaleNotes.includes(pc)
+            ).length;
 
             if (score > bestScore) {
                 bestScore = score;
@@ -74,17 +98,16 @@ function detectScale(pitchClasses) {
 
 const detectedScale = detectScale(pitchClasses);
 
+// final output
 const output = {
     scale: detectedScale,
     notes: notes,
     intervals: intervals
 };
 
-console.log(JSON.stringify(output, null, 2));
-
+// write file
 fs.writeFileSync(
     "analysis.json",
     JSON.stringify(output, null, 2)
 );
-
 console.log("JSON analysis saved to analysis.json");

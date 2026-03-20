@@ -9,7 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@tonejs/midi/build/Midi.js"></script>
 
     <style>
-
         body{
             font-family: monospace;
             background:#111;
@@ -21,6 +20,7 @@
             padding:10px 20px;
             font-size:16px;
             margin-bottom:20px;
+            margin-right:10px;
         }
 
         .note{
@@ -31,7 +31,6 @@
             color:#00ff88;
             font-weight:bold;
         }
-
     </style>
 
 </head>
@@ -41,6 +40,7 @@
 <h1>MIDI Analyzer</h1>
 
 <button onclick="playMidi()">Play</button>
+<button onclick="clearLiveNotes()">Clear</button>
 
 <h2>Detected Scale</h2>
 <div id="scale">loading...</div>
@@ -69,7 +69,6 @@
 
         document.getElementById("scale").innerText =
             analysis.scale.root + " " + analysis.scale.scale
-
     }
 
     function addLiveNote(noteName, intervalText){
@@ -83,17 +82,20 @@
 
         container.prepend(div)
 
-        // remove highlight from previous
         const notes = container.querySelectorAll(".note")
         notes.forEach((n,i)=>{
             if(i !== 0) n.classList.remove("current")
         })
 
-        // limit visible notes
         if(notes.length > MAX_VISIBLE){
             container.removeChild(container.lastChild)
         }
+    }
 
+    function clearLiveNotes(){
+        document.getElementById("liveNotes").innerHTML = ""
+        document.getElementById("currentNote").innerText = "-"
+        document.getElementById("interval").innerText = "-"
     }
 
     async function playMidi(){
@@ -130,13 +132,20 @@
 
             let intervalText = "-"
 
-            if(analysis.intervals[i]){
-                intervalText =
-                    analysis.intervals[i].semitones + " semitones"
+            const interval = analysis.intervals[i]
 
-                document.getElementById("interval").innerText =
-                    intervalText
+            if(interval){
+                const type = interval.type || "unknown"
+
+                intervalText =
+                    interval.semitones + " semitones (" + type + ")"
+            } else {
+                // last note
+                intervalText = "end"
             }
+
+            document.getElementById("interval").innerText =
+                intervalText
 
             addLiveNote(noteData.name, intervalText)
 
@@ -144,8 +153,8 @@
 
         part.start(0)
 
+        Tone.Transport.seconds = 0
         Tone.Transport.start()
-
     }
 
     loadData()

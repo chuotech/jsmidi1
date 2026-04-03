@@ -28,8 +28,12 @@
         }
 
         .current{
-            color:#00ff88;
             font-weight:bold;
+        }
+
+        canvas{
+            border:1px solid #333;
+            margin-top:20px;
         }
     </style>
 
@@ -44,6 +48,9 @@
 
 <h2>Detected Scale</h2>
 <div id="scale">loading...</div>
+
+<h2>Piano Roll</h2>
+<canvas id="pianoRoll" width="900" height="300"></canvas>
 
 <h2>Now Playing</h2>
 <div id="currentNote">-</div>
@@ -62,23 +69,61 @@
 
     const MAX_VISIBLE = 30
 
-    async function loadData(){
+    // 🎨 note colors
+    const NOTE_COLORS = {
+        "C": "#ff4d4d",
+        "C#": "#ff944d",
+        "D": "#ffd24d",
+        "D#": "#d4ff4d",
+        "E": "#4dff88",
+        "F": "#4dd2ff",
+        "F#": "#4d88ff",
+        "G": "#944dff",
+        "G#": "#d94dff",
+        "A": "#ff4da6",
+        "A#": "#ff4d73",
+        "B": "#ffffff"
+    }
 
-        const analysisResponse = await fetch("analysis.json")
-        analysis = await analysisResponse.json()
+    const INTERVAL_NAMES = {
+        1: "minor 2nd",
+        2: "major 2nd",
+        3: "minor 3rd",
+        4: "major 3rd",
+        5: "perfect 4th",
+        6: "tritone",
+        7: "perfect 5th",
+        8: "minor 6th",
+        9: "major 6th",
+        10: "minor 7th",
+        11: "major 7th",
+        0: "octave"
+    }
+
+    function getPitchClass(noteName){
+        return noteName.replace(/[0-9]/g, "")
+    }
+
+    async function loadData(){
+        const res = await fetch("analysis.json?v=" + Date.now())
+        analysis = await res.json()
 
         document.getElementById("scale").innerText =
             analysis.scale.root + " " + analysis.scale.scale
     }
 
-    function addLiveNote(noteName, intervalText){
+    function addLiveNote(noteName, text){
 
         const container = document.getElementById("liveNotes")
 
         const div = document.createElement("div")
         div.className = "note current"
 
-        div.innerText = noteName + "  |  " + intervalText
+        const pitchClass = getPitchClass(noteName)
+        const color = NOTE_COLORS[pitchClass] || "white"
+
+        div.style.color = color
+        div.innerText = noteName + "  |  " + text
 
         container.prepend(div)
 
@@ -98,7 +143,92 @@
         document.getElementById("interval").innerText = "-"
     }
 
+    // 🎹 PIANO ROLL
+    const canvas = document.getElementById("pianoRoll")
+    const ctx = canvas.getContext("2d")
+
+    function drawPianoRoll(timeNow = 0){
+
+        if(!analysis) return
+
+        ctx.clearRect(0,0,canvas.width,canvas.height)
+
+        const notes = analysis.notes
+
+        const minPitch = Math.min(...notes.map(n=>n.pitch))
+        const maxPitch = Math.max(...notes.map(n=>n.pitch))
+        const pitchRange = maxPitch - minPitch + 1
+
+        const totalTime = Math.max(...notes.map(n=>n.start + n.duration))
+
+        const scaleSet = new Set(analysis.scale.scaleNotes)
+
+        notes.forEach((n,i)=>{
+
+            const x = (n.start / totalTime) * canvas.width
+            const w = (n.duration / totalTime) * canvas.width
+
+            const y =
+                canvas.height -
+                ((n.pitch - minPitch) / pitchRange) * canvas.height
+
+            const h = canvas.height / pitchRange
+
+            let color = NOTE_COLORS[n.pitchName || getPitchClass(n.name)] || "#fff"
+
+            const pitchClass = n.pitchName || getPitchClass(n.name)
+
+            if(!scaleSet.has(pitchClass)){
+                color = "#ff3333"
+            }
+
+            ctx.fillStyle = color
+            const radius = Math.max(3, Math.min(w, h) / 2)
+
+            ctx.beginPath()
+            ctx.arc(
+                x + w / 2,   // center X
+                y + h / 2,   // center Y
+                radius,
+                0,
+                Math.PI * 2
+            )
+            ctx.fill()
+
+            // interval line
+            if(i > 0){
+                const prev = notes[i-1]
+
+                const x2 = ((prev.start + prev.duration) / totalTime) * canvas.width
+                const y2 =
+                    canvas.height -
+                    ((prev.pitch - minPitch) / pitchRange) * canvas.height
+
+                ctx.strokeStyle = "#ffffff33"
+                ctx.beginPath()
+                ctx.moveTo(x2, y2)
+                ctx.lineTo(x, y)
+                ctx.stroke()
+            }
+
+        })
+
+        // 🎯 playhead
+        const playX = (timeNow / totalTime) * canvas.width
+
+        ctx.strokeStyle = "#00ff88"
+        ctx.beginPath()
+        ctx.moveTo(playX, 0)
+        ctx.lineTo(playX, canvas.height)
+        ctx.stroke()
+    }
+
     async function playMidi(){
+
+        if(!analysis){
+            alert("No analysis loaded")
+            return
+        }
 
         await Tone.start()
 
@@ -113,6 +243,7 @@
             time: note.start,
             pitch: note.pitch,
             duration: note.duration,
+            velocity: note.velocity,
             name: note.name,
             index: i
         }))
@@ -122,25 +253,43 @@
             synth.triggerAttackRelease(
                 Tone.Frequency(noteData.pitch,"midi"),
                 noteData.duration,
-                time
+                time,
+                noteData.velocity
             )
 
             const i = noteData.index
 
-            document.getElementById("currentNote").innerText =
-                noteData.name
+            const pitchClass = getPitchClass(noteData.name)
+            const color = NOTE_COLORS[pitchClass] || "white"
+
+            const currentNoteEl = document.getElementById("currentNote")
+            currentNoteEl.innerText = noteData.name
+            currentNoteEl.style.color = color
 
             let intervalText = "-"
 
             const interval = analysis.intervals[i]
 
             if(interval){
-                const type = interval.type || "unknown"
+
+                const abs = Math.abs(interval.semitones)
+                const simple = abs % 12
+
+                const name =
+                    INTERVAL_NAMES[simple] ||
+                    simple + " semitones"
+
+                const direction =
+                    interval.semitones > 0 ? "↑" :
+                        interval.semitones < 0 ? "↓" : "-"
 
                 intervalText =
-                    interval.semitones + " semitones (" + type + ")"
+                    direction + " " +
+                    abs +
+                    " (" + name + ", " + interval.type + ")" +
+                    " | vel: " + noteData.velocity.toFixed(2)
+
             } else {
-                // last note
                 intervalText = "end"
             }
 
@@ -152,6 +301,10 @@
         }, events)
 
         part.start(0)
+
+        Tone.Transport.scheduleRepeat(() => {
+            drawPianoRoll(Tone.Transport.seconds)
+        }, 0.016)
 
         Tone.Transport.seconds = 0
         Tone.Transport.start()

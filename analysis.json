@@ -1,218 +1,170 @@
 {
   "scale": {
     "root": "C",
-    "scale": "major",
+    "scale": "lydian",
     "scaleNotes": [
       "C",
       "D",
       "E",
-      "F",
+      "F#",
       "G",
       "A",
       "B"
     ],
+    "matchCount": 7,
+    "totalNotes": 7,
     "score": 7
   },
   "notes": [
     {
       "pitch": 48,
       "pitchClass": 0,
+      "pitchName": "C",
       "name": "C3",
       "start": 0,
-      "duration": 0.5786458333333333,
-      "velocity": 1
+      "duration": 0.39895833333333336,
+      "velocity": 1,
+      "color": "#ff4d4d"
     },
     {
       "pitch": 50,
       "pitchClass": 2,
+      "pitchName": "D",
       "name": "D3",
-      "start": 0.671875,
-      "duration": 0.0697916666666667,
-      "velocity": 1
-    },
-    {
-      "pitch": 49,
-      "pitchClass": 1,
-      "name": "C#3",
-      "start": 0.8583333333333333,
-      "duration": 0.0697916666666667,
-      "velocity": 1
-    },
-    {
-      "pitch": 51,
-      "pitchClass": 3,
-      "name": "D#3",
-      "start": 0.8583333333333333,
-      "duration": 0.022916666666666696,
-      "velocity": 1
+      "start": 0.4395833333333333,
+      "duration": 0.5192708333333333,
+      "velocity": 1,
+      "color": "#ffd24d"
     },
     {
       "pitch": 52,
       "pitchClass": 4,
+      "pitchName": "E",
       "name": "E3",
-      "start": 1.3010416666666667,
-      "duration": 0.5828125,
-      "velocity": 1
-    },
-    {
-      "pitch": 53,
-      "pitchClass": 5,
-      "name": "F3",
-      "start": 1.8604166666666666,
-      "duration": 0.3031250000000001,
-      "velocity": 1
-    },
-    {
-      "pitch": 57,
-      "pitchClass": 9,
-      "name": "A3",
-      "start": 2.5130208333333335,
-      "duration": 0.1401041666666667,
-      "velocity": 1
-    },
-    {
-      "pitch": 55,
-      "pitchClass": 7,
-      "name": "G3",
-      "start": 2.839583333333333,
-      "duration": 0.0697916666666667,
-      "velocity": 1
-    },
-    {
-      "pitch": 53,
-      "pitchClass": 5,
-      "name": "F3",
-      "start": 3.119270833333333,
-      "duration": 0.0697916666666667,
-      "velocity": 1
+      "start": 0.9588541666666667,
+      "duration": 0.4614583333333334,
+      "velocity": 1,
+      "color": "#4dff88"
     },
     {
       "pitch": 54,
       "pitchClass": 6,
+      "pitchName": "F#",
       "name": "F#3",
-      "start": 3.81875,
-      "duration": 0.6057291666666669,
-      "velocity": 1
+      "start": 1.440625,
+      "duration": 0.4296875,
+      "velocity": 1,
+      "color": "#4d88ff"
     },
     {
-      "pitch": 53,
-      "pitchClass": 5,
-      "name": "F3",
-      "start": 4.68125,
-      "duration": 0.11614583333333339,
-      "velocity": 1
-    },
-    {
-      "pitch": 52,
-      "pitchClass": 4,
-      "name": "E3",
-      "start": 4.9609375,
-      "duration": 0.06979166666666625,
-      "velocity": 1
-    },
-    {
-      "pitch": 50,
-      "pitchClass": 2,
-      "name": "D3",
-      "start": 5.054166666666666,
-      "duration": 0.1630208333333334,
-      "velocity": 1
-    },
-    {
-      "pitch": 48,
-      "pitchClass": 0,
-      "name": "C3",
-      "start": 5.333854166666667,
-      "duration": 0.1864583333333334,
-      "velocity": 1
+      "pitch": 55,
+      "pitchClass": 7,
+      "pitchName": "G",
+      "name": "G3",
+      "start": 1.9807291666666667,
+      "duration": 0.34843749999999996,
+      "velocity": 1,
+      "color": "#944dff"
     },
     {
       "pitch": 57,
       "pitchClass": 9,
+      "pitchName": "A",
       "name": "A3",
-      "start": 6.149479166666667,
-      "duration": 0.48958333333333304,
-      "velocity": 1
+      "start": 2.459375,
+      "duration": 0.3890625000000001,
+      "velocity": 1,
+      "color": "#ff4da6"
     },
     {
       "pitch": 59,
       "pitchClass": 11,
+      "pitchName": "B",
       "name": "B3",
-      "start": 6.708854166666667,
-      "duration": 0.48958333333333304,
-      "velocity": 1
+      "start": 2.9703125,
+      "duration": 0.4005208333333332,
+      "velocity": 1,
+      "color": "#ffffff"
     },
     {
       "pitch": 60,
       "pitchClass": 0,
+      "pitchName": "C",
       "name": "C4",
-      "start": 7.571354166666667,
-      "duration": 0.5828125000000002,
-      "velocity": 1
+      "start": 3.478125,
+      "duration": 0.3921874999999999,
+      "velocity": 1,
+      "color": "#ff4d4d"
     },
     {
-      "pitch": 62,
-      "pitchClass": 2,
-      "name": "D4",
-      "start": 8.201041666666667,
-      "duration": 0.11666666666666714,
-      "velocity": 1
+      "pitch": 59,
+      "pitchClass": 11,
+      "pitchName": "B",
+      "name": "B3",
+      "start": 3.96875,
+      "duration": 0.35989583333333375,
+      "velocity": 1,
+      "color": "#ffffff"
     },
     {
-      "pitch": 64,
+      "pitch": 57,
+      "pitchClass": 9,
+      "pitchName": "A",
+      "name": "A3",
+      "start": 4.459375,
+      "duration": 0.3802083333333339,
+      "velocity": 1,
+      "color": "#ff4da6"
+    },
+    {
+      "pitch": 55,
+      "pitchClass": 7,
+      "pitchName": "G",
+      "name": "G3",
+      "start": 4.9703125,
+      "duration": 0.3395833333333327,
+      "velocity": 1,
+      "color": "#944dff"
+    },
+    {
+      "pitch": 54,
+      "pitchClass": 6,
+      "pitchName": "F#",
+      "name": "F#3",
+      "start": 5.469270833333334,
+      "duration": 0.36874999999999947,
+      "velocity": 1,
+      "color": "#4d88ff"
+    },
+    {
+      "pitch": 52,
       "pitchClass": 4,
-      "name": "E4",
-      "start": 8.433854166666666,
-      "duration": 0.16354166666666714,
-      "velocity": 1
+      "pitchName": "E",
+      "name": "E3",
+      "start": 5.939583333333333,
+      "duration": 0.4005208333333332,
+      "velocity": 1,
+      "color": "#4dff88"
     },
     {
-      "pitch": 65,
-      "pitchClass": 5,
-      "name": "F4",
-      "start": 8.6203125,
-      "duration": 0.14010416666666536,
-      "velocity": 1
-    },
-    {
-      "pitch": 64,
-      "pitchClass": 4,
-      "name": "E4",
-      "start": 8.807291666666666,
-      "duration": 0.09322916666666714,
-      "velocity": 1
-    },
-    {
-      "pitch": 63,
-      "pitchClass": 3,
-      "name": "D#4",
-      "start": 9.25,
-      "duration": 0.6526041666666664,
-      "velocity": 1
-    },
-    {
-      "pitch": 62,
+      "pitch": 50,
       "pitchClass": 2,
-      "name": "D4",
-      "start": 9.972395833333334,
-      "duration": 0.30312499999999964,
-      "velocity": 1
+      "pitchName": "D",
+      "name": "D3",
+      "start": 6.430208333333334,
+      "duration": 0.36874999999999947,
+      "velocity": 1,
+      "color": "#ffd24d"
     },
     {
-      "pitch": 61,
-      "pitchClass": 1,
-      "name": "C#4",
-      "start": 10.36875,
-      "duration": 0.27968749999999964,
-      "velocity": 1
-    },
-    {
-      "pitch": 60,
+      "pitch": 48,
       "pitchClass": 0,
-      "name": "C4",
-      "start": 10.834895833333333,
-      "duration": 1.0026041666666679,
-      "velocity": 1
+      "pitchName": "C",
+      "name": "C3",
+      "start": 6.880208333333333,
+      "duration": 0.3682291666666666,
+      "velocity": 1,
+      "color": "#ff4d4d"
     }
   ],
   "intervals": [
@@ -220,145 +172,141 @@
       "from": "C3",
       "to": "D3",
       "semitones": 2,
-      "intervalClass": 2
+      "absSemitones": 2,
+      "intervalClass": 2,
+      "name": "major 2nd",
+      "direction": "up",
+      "type": "step"
     },
     {
       "from": "D3",
-      "to": "C#3",
-      "semitones": -1,
-      "intervalClass": 1
-    },
-    {
-      "from": "C#3",
-      "to": "D#3",
-      "semitones": 2,
-      "intervalClass": 2
-    },
-    {
-      "from": "D#3",
       "to": "E3",
-      "semitones": 1,
-      "intervalClass": 1
+      "semitones": 2,
+      "absSemitones": 2,
+      "intervalClass": 2,
+      "name": "major 2nd",
+      "direction": "up",
+      "type": "step"
     },
     {
       "from": "E3",
-      "to": "F3",
-      "semitones": 1,
-      "intervalClass": 1
-    },
-    {
-      "from": "F3",
-      "to": "A3",
-      "semitones": 4,
-      "intervalClass": 4
-    },
-    {
-      "from": "A3",
-      "to": "G3",
-      "semitones": -2,
-      "intervalClass": 2
-    },
-    {
-      "from": "G3",
-      "to": "F3",
-      "semitones": -2,
-      "intervalClass": 2
-    },
-    {
-      "from": "F3",
       "to": "F#3",
-      "semitones": 1,
-      "intervalClass": 1
+      "semitones": 2,
+      "absSemitones": 2,
+      "intervalClass": 2,
+      "name": "major 2nd",
+      "direction": "up",
+      "type": "step"
     },
     {
       "from": "F#3",
-      "to": "F3",
-      "semitones": -1,
-      "intervalClass": 1
+      "to": "G3",
+      "semitones": 1,
+      "absSemitones": 1,
+      "intervalClass": 1,
+      "name": "minor 2nd",
+      "direction": "up",
+      "type": "step"
     },
     {
-      "from": "F3",
-      "to": "E3",
-      "semitones": -1,
-      "intervalClass": 1
-    },
-    {
-      "from": "E3",
-      "to": "D3",
-      "semitones": -2,
-      "intervalClass": 2
-    },
-    {
-      "from": "D3",
-      "to": "C3",
-      "semitones": -2,
-      "intervalClass": 2
-    },
-    {
-      "from": "C3",
+      "from": "G3",
       "to": "A3",
-      "semitones": 9,
-      "intervalClass": 9
+      "semitones": 2,
+      "absSemitones": 2,
+      "intervalClass": 2,
+      "name": "major 2nd",
+      "direction": "up",
+      "type": "step"
     },
     {
       "from": "A3",
       "to": "B3",
       "semitones": 2,
-      "intervalClass": 2
+      "absSemitones": 2,
+      "intervalClass": 2,
+      "name": "major 2nd",
+      "direction": "up",
+      "type": "step"
     },
     {
       "from": "B3",
       "to": "C4",
       "semitones": 1,
-      "intervalClass": 1
+      "absSemitones": 1,
+      "intervalClass": 1,
+      "name": "minor 2nd",
+      "direction": "up",
+      "type": "step"
     },
     {
       "from": "C4",
-      "to": "D4",
-      "semitones": 2,
-      "intervalClass": 2
-    },
-    {
-      "from": "D4",
-      "to": "E4",
-      "semitones": 2,
-      "intervalClass": 2
-    },
-    {
-      "from": "E4",
-      "to": "F4",
-      "semitones": 1,
-      "intervalClass": 1
-    },
-    {
-      "from": "F4",
-      "to": "E4",
+      "to": "B3",
       "semitones": -1,
-      "intervalClass": 1
+      "absSemitones": 1,
+      "intervalClass": 1,
+      "name": "minor 2nd",
+      "direction": "down",
+      "type": "step"
     },
     {
-      "from": "E4",
-      "to": "D#4",
-      "semitones": -1,
-      "intervalClass": 1
+      "from": "B3",
+      "to": "A3",
+      "semitones": -2,
+      "absSemitones": 2,
+      "intervalClass": 2,
+      "name": "major 2nd",
+      "direction": "down",
+      "type": "step"
     },
     {
-      "from": "D#4",
-      "to": "D4",
-      "semitones": -1,
-      "intervalClass": 1
+      "from": "A3",
+      "to": "G3",
+      "semitones": -2,
+      "absSemitones": 2,
+      "intervalClass": 2,
+      "name": "major 2nd",
+      "direction": "down",
+      "type": "step"
     },
     {
-      "from": "D4",
-      "to": "C#4",
+      "from": "G3",
+      "to": "F#3",
       "semitones": -1,
-      "intervalClass": 1
+      "absSemitones": 1,
+      "intervalClass": 1,
+      "name": "minor 2nd",
+      "direction": "down",
+      "type": "step"
     },
     {
-      "from": "C#4",
-      "to": "C4",
-      "semitones": -1,
-      "intervalClass": 1
+      "from": "F#3",
+      "to": "E3",
+      "semitones": -2,
+      "absSemitones": 2,
+      "intervalClass": 2,
+      "name": "major 2nd",
+      "direction": "down",
+      "type": "step"
+    },
+    {
+      "from": "E3",
+      "to": "D3",
+      "semitones": -2,
+      "absSemitones": 2,
+      "intervalClass": 2,
+      "name": "major 2nd",
+      "direction": "down",
+      "type": "step"
+    },
+    {
+      "from": "D3",
+      "to": "C3",
+      "semitones": -2,
+      "absSemitones": 2,
+      "intervalClass": 2,
+      "name": "major 2nd",
+      "direction": "down",
+      "type": "step"
     }
   ]
 }

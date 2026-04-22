@@ -11,440 +11,925 @@
       "A",
       "B"
     ],
-    "confidence": 0.7777777777777778
+    "confidence": 0.875
   },
+  "splitPoint": 60,
   "notes": [
     {
       "pitch": 48,
       "pitchClass": 0,
+      "pitchName": "C",
       "name": "C3",
       "start": 0,
-      "duration": 0.41510416666666666,
+      "duration": 2.09375,
       "velocity": 1,
-      "weight": 0.8859053046909251
+      "hand": "left",
+      "weight": 0.6582581082527563
     },
     {
       "pitch": 52,
       "pitchClass": 4,
+      "pitchName": "E",
       "name": "E3",
-      "start": 0.3453125,
-      "duration": 0.5359375,
+      "start": 0,
+      "duration": 2.09375,
       "velocity": 1,
-      "weight": 1
+      "hand": "left",
+      "weight": 0.8604916687479932
     },
     {
       "pitch": 55,
       "pitchClass": 7,
+      "pitchName": "G",
       "name": "G3",
-      "start": 0.625,
-      "duration": 0.2796875,
+      "start": 0,
+      "duration": 2.09375,
       "velocity": 1,
-      "weight": 0.9731477422183253
+      "hand": "left",
+      "weight": 1
     },
     {
-      "pitch": 48,
+      "pitch": 74,
+      "pitchClass": 2,
+      "pitchName": "D",
+      "name": "D5",
+      "start": 0,
+      "duration": 0.48489583333333336,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6582224283726408
+    },
+    {
+      "pitch": 72,
       "pitchClass": 0,
-      "name": "C3",
-      "start": 1.1380208333333333,
-      "duration": 0.5125000000000002,
+      "pitchName": "C",
+      "name": "C5",
+      "start": 0.5083333333333333,
+      "duration": 0.46614583333333337,
       "velocity": 1,
-      "weight": 0.8859053046909251
+      "hand": "right",
+      "weight": 0.6582581082527563
     },
     {
-      "pitch": 52,
-      "pitchClass": 4,
-      "name": "E3",
-      "start": 1.1609375,
-      "duration": 0.4895833333333335,
+      "pitch": 71,
+      "pitchClass": 11,
+      "pitchName": "B",
+      "name": "B4",
+      "start": 1.0911458333333333,
+      "duration": 0.4432291666666668,
       "velocity": 1,
-      "weight": 1
+      "hand": "right",
+      "weight": 0.878902486887644
     },
     {
-      "pitch": 55,
-      "pitchClass": 7,
-      "name": "G3",
-      "start": 1.1609375,
-      "duration": 0.4666666666666668,
+      "pitch": 69,
+      "pitchClass": 9,
+      "pitchName": "A",
+      "name": "A4",
+      "start": 1.7208333333333334,
+      "duration": 0.39583333333333326,
       "velocity": 1,
-      "weight": 0.9731477422183253
-    },
-    {
-      "pitch": 53,
-      "pitchClass": 5,
-      "name": "F3",
-      "start": 1.8369791666666666,
-      "duration": 0.6062500000000002,
-      "velocity": 1,
-      "weight": 0.8717119684348971
+      "hand": "right",
+      "weight": 0.6345309879758804
     },
     {
       "pitch": 57,
       "pitchClass": 9,
+      "pitchName": "A",
       "name": "A3",
-      "start": 1.8369791666666666,
-      "duration": 0.6062500000000002,
+      "start": 2.396875,
+      "duration": 2.4473958333333337,
       "velocity": 1,
-      "weight": 0.42114204296361246
-    },
-    {
-      "pitch": 52,
-      "pitchClass": 4,
-      "name": "E3",
-      "start": 1.8838541666666666,
-      "duration": 0,
-      "velocity": 1,
-      "weight": 1
+      "hand": "left",
+      "weight": 0.6345309879758804
     },
     {
       "pitch": 50,
       "pitchClass": 2,
+      "pitchName": "D",
       "name": "D3",
-      "start": 1.9072916666666666,
-      "duration": 0.4895833333333335,
+      "start": 2.443229166666667,
+      "duration": 2.354166666666667,
       "velocity": 1,
-      "weight": 0.6230819815870233
-    },
-    {
-      "pitch": 54,
-      "pitchClass": 6,
-      "name": "F#3",
-      "start": 2.816145833333333,
-      "duration": 0.7229166666666669,
-      "velocity": 1,
-      "weight": 0.23388864533099518
-    },
-    {
-      "pitch": 59,
-      "pitchClass": 11,
-      "name": "B3",
-      "start": 2.839583333333333,
-      "duration": 0.7458333333333336,
-      "velocity": 1,
-      "weight": 0.4137439719421307
-    },
-    {
-      "pitch": 50,
-      "pitchClass": 2,
-      "name": "D3",
-      "start": 2.839583333333333,
-      "duration": 0.6526041666666669,
-      "velocity": 1,
-      "weight": 0.6230819815870233
-    },
-    {
-      "pitch": 59,
-      "pitchClass": 11,
-      "name": "B3",
-      "start": 3.7484375,
-      "duration": 0.1864583333333334,
-      "velocity": 1,
-      "weight": 0.4137439719421307
-    },
-    {
-      "pitch": 55,
-      "pitchClass": 7,
-      "name": "G3",
-      "start": 3.9817708333333335,
-      "duration": 0.16302083333333295,
-      "velocity": 1,
-      "weight": 0.9731477422183253
-    },
-    {
-      "pitch": 55,
-      "pitchClass": 7,
-      "name": "G3",
-      "start": 4.168229166666666,
-      "duration": 0.09322916666666714,
-      "velocity": 1,
-      "weight": 0.9731477422183253
+      "hand": "left",
+      "weight": 0.6582224283726408
     },
     {
       "pitch": 53,
       "pitchClass": 5,
+      "pitchName": "F",
       "name": "F3",
-      "start": 4.238020833333334,
-      "duration": 0.34999999999999964,
+      "start": 2.443229166666667,
+      "duration": 2.377604166666667,
       "velocity": 1,
-      "weight": 0.8717119684348971
+      "hand": "left",
+      "weight": 0.3987226602918615
+    },
+    {
+      "pitch": 67,
+      "pitchClass": 7,
+      "pitchName": "G",
+      "name": "G4",
+      "start": 2.443229166666667,
+      "duration": 0.513020833333333,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 1
+    },
+    {
+      "pitch": 69,
+      "pitchClass": 9,
+      "pitchName": "A",
+      "name": "A4",
+      "start": 3.142708333333333,
+      "duration": 0.3494791666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6345309879758804
+    },
+    {
+      "pitch": 70,
+      "pitchClass": 10,
+      "pitchName": "A#",
+      "name": "A#4",
+      "start": 3.841666666666667,
+      "duration": 0.37343749999999964,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.1283405287758233
+    },
+    {
+      "pitch": 71,
+      "pitchClass": 11,
+      "pitchName": "B",
+      "name": "B4",
+      "start": 4.494791666666667,
+      "duration": 0.3260416666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.878902486887644
+    },
+    {
+      "pitch": 59,
+      "pitchClass": 11,
+      "pitchName": "B",
+      "name": "B3",
+      "start": 5.100520833333333,
+      "duration": 5.641145833333334,
+      "velocity": 1,
+      "hand": "left",
+      "weight": 0.878902486887644
     },
     {
       "pitch": 52,
       "pitchClass": 4,
+      "pitchName": "E",
       "name": "E3",
-      "start": 4.774479166666667,
-      "duration": 0.20937499999999964,
+      "start": 5.147395833333333,
+      "duration": 5.594270833333334,
       "velocity": 1,
+      "hand": "left",
+      "weight": 0.8604916687479932
+    },
+    {
+      "pitch": 55,
+      "pitchClass": 7,
+      "pitchName": "G",
+      "name": "G3",
+      "start": 5.170833333333333,
+      "duration": 5.570833333333334,
+      "velocity": 1,
+      "hand": "left",
       "weight": 1
+    },
+    {
+      "pitch": 72,
+      "pitchClass": 0,
+      "pitchName": "C",
+      "name": "C5",
+      "start": 5.170833333333333,
+      "duration": 0.5593750000000002,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6582581082527563
+    },
+    {
+      "pitch": 74,
+      "pitchClass": 2,
+      "pitchName": "D",
+      "name": "D5",
+      "start": 5.916666666666667,
+      "duration": 0.3729166666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6582224283726408
+    },
+    {
+      "pitch": 69,
+      "pitchClass": 9,
+      "pitchName": "A",
+      "name": "A4",
+      "start": 6.592708333333333,
+      "duration": 0.06979166666666625,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6345309879758804
+    },
+    {
+      "pitch": 71,
+      "pitchClass": 11,
+      "pitchName": "B",
+      "name": "B4",
+      "start": 6.592708333333333,
+      "duration": 0.41927083333333304,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.878902486887644
+    },
+    {
+      "pitch": 67,
+      "pitchClass": 7,
+      "pitchName": "G",
+      "name": "G4",
+      "start": 7.291666666666667,
+      "duration": 0.4197916666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 1
+    },
+    {
+      "pitch": 65,
+      "pitchClass": 5,
+      "pitchName": "F",
+      "name": "F4",
+      "start": 8.038020833333333,
+      "duration": 0.4427083333333339,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.3987226602918615
+    },
+    {
+      "pitch": 64,
+      "pitchClass": 4,
+      "pitchName": "E",
+      "name": "E4",
+      "start": 8.690625,
+      "duration": 0.3729166666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.8604916687479932
+    },
+    {
+      "pitch": 62,
+      "pitchClass": 2,
+      "pitchName": "D",
+      "name": "D4",
+      "start": 9.436458333333333,
+      "duration": 0.3963541666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6582224283726408
     },
     {
       "pitch": 60,
       "pitchClass": 0,
+      "pitchName": "C",
       "name": "C4",
-      "start": 5.54375,
-      "duration": 0.7692708333333336,
+      "start": 10.182291666666666,
+      "duration": 0.4895833333333339,
       "velocity": 1,
-      "weight": 0.8859053046909251
-    },
+      "hand": "right",
+      "weight": 0.6582581082527563
+    }
+  ],
+  "leftHand": [
     {
-      "pitch": 56,
-      "pitchClass": 8,
-      "name": "G#3",
-      "start": 5.613541666666666,
-      "duration": 0.6994791666666673,
+      "pitch": 48,
+      "pitchClass": 0,
+      "pitchName": "C",
+      "name": "C3",
+      "start": 0,
+      "duration": 2.09375,
       "velocity": 1,
-      "weight": 0.23142262165716798
-    },
-    {
-      "pitch": 53,
-      "pitchClass": 5,
-      "name": "F3",
-      "start": 5.636979166666666,
-      "duration": 0.6760416666666673,
-      "velocity": 1,
-      "weight": 0.8717119684348971
-    },
-    {
-      "pitch": 50,
-      "pitchClass": 2,
-      "name": "D3",
-      "start": 6.91875,
-      "duration": 0.27968749999999964,
-      "velocity": 1,
-      "weight": 0.6230819815870233
-    },
-    {
-      "pitch": 53,
-      "pitchClass": 5,
-      "name": "F3",
-      "start": 7.035416666666666,
-      "duration": 0.6526041666666673,
-      "velocity": 1,
-      "weight": 0.8717119684348971
-    },
-    {
-      "pitch": 57,
-      "pitchClass": 9,
-      "name": "A3",
-      "start": 7.315104166666667,
-      "duration": 0.3963541666666668,
-      "velocity": 1,
-      "weight": 0.42114204296361246
+      "hand": "left",
+      "weight": 0.6582581082527563
     },
     {
       "pitch": 52,
       "pitchClass": 4,
+      "pitchName": "E",
       "name": "E3",
-      "start": 8.154166666666667,
-      "duration": 0.7692708333333336,
+      "start": 0,
+      "duration": 2.09375,
       "velocity": 1,
-      "weight": 1
+      "hand": "left",
+      "weight": 0.8604916687479932
     },
     {
       "pitch": 55,
       "pitchClass": 7,
+      "pitchName": "G",
       "name": "G3",
-      "start": 8.154166666666667,
-      "duration": 0.7463541666666664,
+      "start": 0,
+      "duration": 2.09375,
       "velocity": 1,
-      "weight": 0.9731477422183253
+      "hand": "left",
+      "weight": 1
     },
     {
-      "pitch": 48,
-      "pitchClass": 0,
-      "name": "C3",
-      "start": 8.177604166666667,
-      "duration": 0.7229166666666664,
+      "pitch": 57,
+      "pitchClass": 9,
+      "pitchName": "A",
+      "name": "A3",
+      "start": 2.396875,
+      "duration": 2.4473958333333337,
       "velocity": 1,
-      "weight": 0.8859053046909251
+      "hand": "left",
+      "weight": 0.6345309879758804
+    },
+    {
+      "pitch": 50,
+      "pitchClass": 2,
+      "pitchName": "D",
+      "name": "D3",
+      "start": 2.443229166666667,
+      "duration": 2.354166666666667,
+      "velocity": 1,
+      "hand": "left",
+      "weight": 0.6582224283726408
+    },
+    {
+      "pitch": 53,
+      "pitchClass": 5,
+      "pitchName": "F",
+      "name": "F3",
+      "start": 2.443229166666667,
+      "duration": 2.377604166666667,
+      "velocity": 1,
+      "hand": "left",
+      "weight": 0.3987226602918615
+    },
+    {
+      "pitch": 59,
+      "pitchClass": 11,
+      "pitchName": "B",
+      "name": "B3",
+      "start": 5.100520833333333,
+      "duration": 5.641145833333334,
+      "velocity": 1,
+      "hand": "left",
+      "weight": 0.878902486887644
+    },
+    {
+      "pitch": 52,
+      "pitchClass": 4,
+      "pitchName": "E",
+      "name": "E3",
+      "start": 5.147395833333333,
+      "duration": 5.594270833333334,
+      "velocity": 1,
+      "hand": "left",
+      "weight": 0.8604916687479932
+    },
+    {
+      "pitch": 55,
+      "pitchClass": 7,
+      "pitchName": "G",
+      "name": "G3",
+      "start": 5.170833333333333,
+      "duration": 5.570833333333334,
+      "velocity": 1,
+      "hand": "left",
+      "weight": 1
+    }
+  ],
+  "rightHand": [
+    {
+      "pitch": 74,
+      "pitchClass": 2,
+      "pitchName": "D",
+      "name": "D5",
+      "start": 0,
+      "duration": 0.48489583333333336,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6582224283726408
+    },
+    {
+      "pitch": 72,
+      "pitchClass": 0,
+      "pitchName": "C",
+      "name": "C5",
+      "start": 0.5083333333333333,
+      "duration": 0.46614583333333337,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6582581082527563
+    },
+    {
+      "pitch": 71,
+      "pitchClass": 11,
+      "pitchName": "B",
+      "name": "B4",
+      "start": 1.0911458333333333,
+      "duration": 0.4432291666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.878902486887644
+    },
+    {
+      "pitch": 69,
+      "pitchClass": 9,
+      "pitchName": "A",
+      "name": "A4",
+      "start": 1.7208333333333334,
+      "duration": 0.39583333333333326,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6345309879758804
+    },
+    {
+      "pitch": 67,
+      "pitchClass": 7,
+      "pitchName": "G",
+      "name": "G4",
+      "start": 2.443229166666667,
+      "duration": 0.513020833333333,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 1
+    },
+    {
+      "pitch": 69,
+      "pitchClass": 9,
+      "pitchName": "A",
+      "name": "A4",
+      "start": 3.142708333333333,
+      "duration": 0.3494791666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6345309879758804
+    },
+    {
+      "pitch": 70,
+      "pitchClass": 10,
+      "pitchName": "A#",
+      "name": "A#4",
+      "start": 3.841666666666667,
+      "duration": 0.37343749999999964,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.1283405287758233
+    },
+    {
+      "pitch": 71,
+      "pitchClass": 11,
+      "pitchName": "B",
+      "name": "B4",
+      "start": 4.494791666666667,
+      "duration": 0.3260416666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.878902486887644
+    },
+    {
+      "pitch": 72,
+      "pitchClass": 0,
+      "pitchName": "C",
+      "name": "C5",
+      "start": 5.170833333333333,
+      "duration": 0.5593750000000002,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6582581082527563
+    },
+    {
+      "pitch": 74,
+      "pitchClass": 2,
+      "pitchName": "D",
+      "name": "D5",
+      "start": 5.916666666666667,
+      "duration": 0.3729166666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6582224283726408
+    },
+    {
+      "pitch": 69,
+      "pitchClass": 9,
+      "pitchName": "A",
+      "name": "A4",
+      "start": 6.592708333333333,
+      "duration": 0.06979166666666625,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6345309879758804
+    },
+    {
+      "pitch": 71,
+      "pitchClass": 11,
+      "pitchName": "B",
+      "name": "B4",
+      "start": 6.592708333333333,
+      "duration": 0.41927083333333304,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.878902486887644
+    },
+    {
+      "pitch": 67,
+      "pitchClass": 7,
+      "pitchName": "G",
+      "name": "G4",
+      "start": 7.291666666666667,
+      "duration": 0.4197916666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 1
+    },
+    {
+      "pitch": 65,
+      "pitchClass": 5,
+      "pitchName": "F",
+      "name": "F4",
+      "start": 8.038020833333333,
+      "duration": 0.4427083333333339,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.3987226602918615
+    },
+    {
+      "pitch": 64,
+      "pitchClass": 4,
+      "pitchName": "E",
+      "name": "E4",
+      "start": 8.690625,
+      "duration": 0.3729166666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.8604916687479932
+    },
+    {
+      "pitch": 62,
+      "pitchClass": 2,
+      "pitchName": "D",
+      "name": "D4",
+      "start": 9.436458333333333,
+      "duration": 0.3963541666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6582224283726408
+    },
+    {
+      "pitch": 60,
+      "pitchClass": 0,
+      "pitchName": "C",
+      "name": "C4",
+      "start": 10.182291666666666,
+      "duration": 0.4895833333333339,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6582581082527563
+    }
+  ],
+  "melody": [
+    {
+      "pitch": 74,
+      "pitchClass": 2,
+      "pitchName": "D",
+      "name": "D5",
+      "start": 0,
+      "duration": 0.48489583333333336,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6582224283726408
+    },
+    {
+      "pitch": 72,
+      "pitchClass": 0,
+      "pitchName": "C",
+      "name": "C5",
+      "start": 0.5083333333333333,
+      "duration": 0.46614583333333337,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6582581082527563
+    },
+    {
+      "pitch": 71,
+      "pitchClass": 11,
+      "pitchName": "B",
+      "name": "B4",
+      "start": 1.0911458333333333,
+      "duration": 0.4432291666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.878902486887644
+    },
+    {
+      "pitch": 69,
+      "pitchClass": 9,
+      "pitchName": "A",
+      "name": "A4",
+      "start": 1.7208333333333334,
+      "duration": 0.39583333333333326,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6345309879758804
+    },
+    {
+      "pitch": 67,
+      "pitchClass": 7,
+      "pitchName": "G",
+      "name": "G4",
+      "start": 2.443229166666667,
+      "duration": 0.513020833333333,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 1
+    },
+    {
+      "pitch": 69,
+      "pitchClass": 9,
+      "pitchName": "A",
+      "name": "A4",
+      "start": 3.142708333333333,
+      "duration": 0.3494791666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6345309879758804
+    },
+    {
+      "pitch": 70,
+      "pitchClass": 10,
+      "pitchName": "A#",
+      "name": "A#4",
+      "start": 3.841666666666667,
+      "duration": 0.37343749999999964,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.1283405287758233
+    },
+    {
+      "pitch": 71,
+      "pitchClass": 11,
+      "pitchName": "B",
+      "name": "B4",
+      "start": 4.494791666666667,
+      "duration": 0.3260416666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.878902486887644
+    },
+    {
+      "pitch": 72,
+      "pitchClass": 0,
+      "pitchName": "C",
+      "name": "C5",
+      "start": 5.170833333333333,
+      "duration": 0.5593750000000002,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6582581082527563
+    },
+    {
+      "pitch": 74,
+      "pitchClass": 2,
+      "pitchName": "D",
+      "name": "D5",
+      "start": 5.916666666666667,
+      "duration": 0.3729166666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6582224283726408
+    },
+    {
+      "pitch": 69,
+      "pitchClass": 9,
+      "pitchName": "A",
+      "name": "A4",
+      "start": 6.592708333333333,
+      "duration": 0.06979166666666625,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6345309879758804
+    },
+    {
+      "pitch": 71,
+      "pitchClass": 11,
+      "pitchName": "B",
+      "name": "B4",
+      "start": 6.592708333333333,
+      "duration": 0.41927083333333304,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.878902486887644
+    },
+    {
+      "pitch": 67,
+      "pitchClass": 7,
+      "pitchName": "G",
+      "name": "G4",
+      "start": 7.291666666666667,
+      "duration": 0.4197916666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 1
+    },
+    {
+      "pitch": 65,
+      "pitchClass": 5,
+      "pitchName": "F",
+      "name": "F4",
+      "start": 8.038020833333333,
+      "duration": 0.4427083333333339,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.3987226602918615
+    },
+    {
+      "pitch": 64,
+      "pitchClass": 4,
+      "pitchName": "E",
+      "name": "E4",
+      "start": 8.690625,
+      "duration": 0.3729166666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.8604916687479932
+    },
+    {
+      "pitch": 62,
+      "pitchClass": 2,
+      "pitchName": "D",
+      "name": "D4",
+      "start": 9.436458333333333,
+      "duration": 0.3963541666666668,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6582224283726408
+    },
+    {
+      "pitch": 60,
+      "pitchClass": 0,
+      "pitchName": "C",
+      "name": "C4",
+      "start": 10.182291666666666,
+      "duration": 0.4895833333333339,
+      "velocity": 1,
+      "hand": "right",
+      "weight": 0.6582581082527563
     }
   ],
   "intervals": [
     {
-      "from": "C3",
-      "to": "E3",
-      "semitones": 4,
-      "intervalClass": 4,
-      "type": "jump"
-    },
-    {
-      "from": "E3",
-      "to": "G3",
-      "semitones": 3,
-      "intervalClass": 3,
-      "type": "jump"
-    },
-    {
-      "from": "G3",
-      "to": "C3",
-      "semitones": -7,
-      "intervalClass": 7,
-      "type": "jump"
-    },
-    {
-      "from": "C3",
-      "to": "E3",
-      "semitones": 4,
-      "intervalClass": 4,
-      "type": "jump"
-    },
-    {
-      "from": "E3",
-      "to": "G3",
-      "semitones": 3,
-      "intervalClass": 3,
-      "type": "jump"
-    },
-    {
-      "from": "G3",
-      "to": "F3",
+      "from": "D5",
+      "to": "C5",
+      "fromIndex": 0,
       "semitones": -2,
       "intervalClass": 2,
-      "type": "step"
+      "type": "step",
+      "hand": "right"
     },
     {
-      "from": "F3",
-      "to": "A3",
-      "semitones": 4,
-      "intervalClass": 4,
-      "type": "jump"
-    },
-    {
-      "from": "A3",
-      "to": "E3",
-      "semitones": -5,
-      "intervalClass": 5,
-      "type": "jump"
-    },
-    {
-      "from": "E3",
-      "to": "D3",
-      "semitones": -2,
-      "intervalClass": 2,
-      "type": "step"
-    },
-    {
-      "from": "D3",
-      "to": "F#3",
-      "semitones": 4,
-      "intervalClass": 4,
-      "type": "jump"
-    },
-    {
-      "from": "F#3",
-      "to": "B3",
-      "semitones": 5,
-      "intervalClass": 5,
-      "type": "jump"
-    },
-    {
-      "from": "B3",
-      "to": "D3",
-      "semitones": -9,
-      "intervalClass": 9,
-      "type": "jump"
-    },
-    {
-      "from": "D3",
-      "to": "B3",
-      "semitones": 9,
-      "intervalClass": 9,
-      "type": "jump"
-    },
-    {
-      "from": "B3",
-      "to": "G3",
-      "semitones": -4,
-      "intervalClass": 4,
-      "type": "jump"
-    },
-    {
-      "from": "G3",
-      "to": "G3",
-      "semitones": 0,
-      "intervalClass": 0,
-      "type": "repeat"
-    },
-    {
-      "from": "G3",
-      "to": "F3",
-      "semitones": -2,
-      "intervalClass": 2,
-      "type": "step"
-    },
-    {
-      "from": "F3",
-      "to": "E3",
+      "from": "C5",
+      "to": "B4",
+      "fromIndex": 1,
       "semitones": -1,
       "intervalClass": 1,
-      "type": "step"
+      "type": "step",
+      "hand": "right"
     },
     {
-      "from": "E3",
-      "to": "C4",
-      "semitones": 8,
-      "intervalClass": 8,
-      "type": "jump"
+      "from": "B4",
+      "to": "A4",
+      "fromIndex": 2,
+      "semitones": -2,
+      "intervalClass": 2,
+      "type": "step",
+      "hand": "right"
     },
     {
-      "from": "C4",
-      "to": "G#3",
-      "semitones": -4,
-      "intervalClass": 4,
-      "type": "jump"
+      "from": "A4",
+      "to": "G4",
+      "fromIndex": 3,
+      "semitones": -2,
+      "intervalClass": 2,
+      "type": "step",
+      "hand": "right"
     },
     {
-      "from": "G#3",
-      "to": "F3",
-      "semitones": -3,
-      "intervalClass": 3,
-      "type": "jump"
+      "from": "G4",
+      "to": "A4",
+      "fromIndex": 4,
+      "semitones": 2,
+      "intervalClass": 2,
+      "type": "step",
+      "hand": "right"
     },
     {
-      "from": "F3",
-      "to": "D3",
-      "semitones": -3,
-      "intervalClass": 3,
-      "type": "jump"
+      "from": "A4",
+      "to": "A#4",
+      "fromIndex": 5,
+      "semitones": 1,
+      "intervalClass": 1,
+      "type": "step",
+      "hand": "right"
     },
     {
-      "from": "D3",
-      "to": "F3",
-      "semitones": 3,
-      "intervalClass": 3,
-      "type": "jump"
+      "from": "A#4",
+      "to": "B4",
+      "fromIndex": 6,
+      "semitones": 1,
+      "intervalClass": 1,
+      "type": "step",
+      "hand": "right"
     },
     {
-      "from": "F3",
-      "to": "A3",
-      "semitones": 4,
-      "intervalClass": 4,
-      "type": "jump"
+      "from": "B4",
+      "to": "C5",
+      "fromIndex": 7,
+      "semitones": 1,
+      "intervalClass": 1,
+      "type": "step",
+      "hand": "right"
     },
     {
-      "from": "A3",
-      "to": "E3",
+      "from": "C5",
+      "to": "D5",
+      "fromIndex": 8,
+      "semitones": 2,
+      "intervalClass": 2,
+      "type": "step",
+      "hand": "right"
+    },
+    {
+      "from": "D5",
+      "to": "A4",
+      "fromIndex": 9,
       "semitones": -5,
       "intervalClass": 5,
-      "type": "jump"
+      "type": "jump",
+      "hand": "right"
     },
     {
-      "from": "E3",
-      "to": "G3",
-      "semitones": 3,
-      "intervalClass": 3,
-      "type": "jump"
+      "from": "A4",
+      "to": "B4",
+      "fromIndex": 10,
+      "semitones": 2,
+      "intervalClass": 2,
+      "type": "step",
+      "hand": "right"
     },
     {
-      "from": "G3",
-      "to": "C3",
-      "semitones": -7,
-      "intervalClass": 7,
-      "type": "jump"
+      "from": "B4",
+      "to": "G4",
+      "fromIndex": 11,
+      "semitones": -4,
+      "intervalClass": 4,
+      "type": "jump",
+      "hand": "right"
+    },
+    {
+      "from": "G4",
+      "to": "F4",
+      "fromIndex": 12,
+      "semitones": -2,
+      "intervalClass": 2,
+      "type": "step",
+      "hand": "right"
+    },
+    {
+      "from": "F4",
+      "to": "E4",
+      "fromIndex": 13,
+      "semitones": -1,
+      "intervalClass": 1,
+      "type": "step",
+      "hand": "right"
+    },
+    {
+      "from": "E4",
+      "to": "D4",
+      "fromIndex": 14,
+      "semitones": -2,
+      "intervalClass": 2,
+      "type": "step",
+      "hand": "right"
+    },
+    {
+      "from": "D4",
+      "to": "C4",
+      "fromIndex": 15,
+      "semitones": -2,
+      "intervalClass": 2,
+      "type": "step",
+      "hand": "right"
     }
   ],
   "chords": [
     {
-      "time": 1.1380208333333333,
+      "time": 0,
       "chord": {
         "root": "C",
         "type": "major",
@@ -452,35 +937,12 @@
           "C",
           "E",
           "G"
-        ]
+        ],
+        "label": "C"
       }
     },
     {
-      "time": 1.1609375,
-      "chord": {
-        "root": "C",
-        "type": "major",
-        "notes": [
-          "C",
-          "E",
-          "G"
-        ]
-      }
-    },
-    {
-      "time": 1.1609375,
-      "chord": {
-        "root": "C",
-        "type": "major",
-        "notes": [
-          "C",
-          "E",
-          "G"
-        ]
-      }
-    },
-    {
-      "time": 1.8369791666666666,
+      "time": 2.396875,
       "chord": {
         "root": "D",
         "type": "minor",
@@ -488,151 +950,21 @@
           "D",
           "F",
           "A"
-        ]
+        ],
+        "label": "Dm"
       }
     },
     {
-      "time": 1.8369791666666666,
+      "time": 5.100520833333333,
       "chord": {
-        "root": "D",
+        "root": "E",
         "type": "minor",
         "notes": [
-          "D",
-          "F",
-          "A"
-        ]
-      }
-    },
-    {
-      "time": 1.8838541666666666,
-      "chord": {
-        "root": "D",
-        "type": "minor",
-        "notes": [
-          "D",
-          "F",
-          "A"
-        ]
-      }
-    },
-    {
-      "time": 1.9072916666666666,
-      "chord": {
-        "root": "D",
-        "type": "minor",
-        "notes": [
-          "D",
-          "F",
-          "A"
-        ]
-      }
-    },
-    {
-      "time": 2.816145833333333,
-      "chord": {
-        "root": "B",
-        "type": "minor",
-        "notes": [
-          "B",
-          "D",
-          "F#"
-        ]
-      }
-    },
-    {
-      "time": 2.839583333333333,
-      "chord": {
-        "root": "B",
-        "type": "minor",
-        "notes": [
-          "B",
-          "D",
-          "F#"
-        ]
-      }
-    },
-    {
-      "time": 2.839583333333333,
-      "chord": {
-        "root": "B",
-        "type": "minor",
-        "notes": [
-          "B",
-          "D",
-          "F#"
-        ]
-      }
-    },
-    {
-      "time": 5.54375,
-      "chord": {
-        "root": "F",
-        "type": "minor",
-        "notes": [
-          "F",
-          "G#",
-          "C"
-        ]
-      }
-    },
-    {
-      "time": 5.613541666666666,
-      "chord": {
-        "root": "F",
-        "type": "minor",
-        "notes": [
-          "F",
-          "G#",
-          "C"
-        ]
-      }
-    },
-    {
-      "time": 5.636979166666666,
-      "chord": {
-        "root": "F",
-        "type": "minor",
-        "notes": [
-          "F",
-          "G#",
-          "C"
-        ]
-      }
-    },
-    {
-      "time": 8.154166666666667,
-      "chord": {
-        "root": "C",
-        "type": "major",
-        "notes": [
-          "C",
           "E",
-          "G"
-        ]
-      }
-    },
-    {
-      "time": 8.154166666666667,
-      "chord": {
-        "root": "C",
-        "type": "major",
-        "notes": [
-          "C",
-          "E",
-          "G"
-        ]
-      }
-    },
-    {
-      "time": 8.177604166666667,
-      "chord": {
-        "root": "C",
-        "type": "major",
-        "notes": [
-          "C",
-          "E",
-          "G"
-        ]
+          "G",
+          "B"
+        ],
+        "label": "Em"
       }
     }
   ]

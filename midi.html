@@ -6,7 +6,6 @@
     <title>MIDI Analyzer Player</title>
 
     <script src="https://unpkg.com/tone@14.8.49/build/Tone.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tonejs/midi/build/Midi.js"></script>
 
     <style>
         body{
@@ -34,6 +33,7 @@
         canvas{
             border:1px solid #333;
             margin-top:20px;
+            background:#0b0b0b;
         }
     </style>
 
@@ -49,10 +49,13 @@
 <h2>Detected Scale</h2>
 <div id="scale">loading...</div>
 
+<h2>Current Chord</h2>
+<div id="currentChord">-</div>
+
 <h2>Piano Roll</h2>
 <canvas id="pianoRoll" width="900" height="300"></canvas>
 
-<h2>Now Playing</h2>
+<h2>Now Playing (Melody)</h2>
 <div id="currentNote">-</div>
 
 <h2>Interval</h2>
@@ -66,10 +69,10 @@
     let analysis
     let synth
     let part
+    let chordPart
 
     const MAX_VISIBLE = 30
 
-    // 🎨 note colors
     const NOTE_COLORS = {
         "C": "#ff4d4d",
         "C#": "#ff944d",
@@ -113,7 +116,6 @@
     }
 
     function addLiveNote(noteName, text){
-
         const container = document.getElementById("liveNotes")
 
         const div = document.createElement("div")
@@ -141,9 +143,9 @@
         document.getElementById("liveNotes").innerHTML = ""
         document.getElementById("currentNote").innerText = "-"
         document.getElementById("interval").innerText = "-"
+        document.getElementById("currentChord").innerText = "-"
     }
 
-    // 🎹 PIANO ROLL
     const canvas = document.getElementById("pianoRoll")
     const ctx = canvas.getContext("2d")
 
@@ -161,59 +163,21 @@
 
         const totalTime = Math.max(...notes.map(n=>n.start + n.duration))
 
-        const scaleSet = new Set(analysis.scale.scaleNotes)
-
-        notes.forEach((n,i)=>{
+        notes.forEach((n)=>{
 
             const x = (n.start / totalTime) * canvas.width
-            const w = (n.duration / totalTime) * canvas.width
+            const w = Math.max(2, (n.duration / totalTime) * canvas.width)
 
             const y =
                 canvas.height -
-                ((n.pitch - minPitch) / pitchRange) * canvas.height
+                ((n.pitch - minPitch + 1) / pitchRange) * canvas.height
 
-            const h = canvas.height / pitchRange
+            const h = Math.max(3, canvas.height / pitchRange)
 
-            let color = NOTE_COLORS[n.pitchName || getPitchClass(n.name)] || "#fff"
-
-            const pitchClass = n.pitchName || getPitchClass(n.name)
-
-            if(!scaleSet.has(pitchClass)){
-                color = "#ff3333"
-            }
-
-            ctx.fillStyle = color
-            const radius = Math.max(3, Math.min(w, h) / 2)
-
-            ctx.beginPath()
-            ctx.arc(
-                x + w / 2,   // center X
-                y + h / 2,   // center Y
-                radius,
-                0,
-                Math.PI * 2
-            )
-            ctx.fill()
-
-            // interval line
-            if(i > 0){
-                const prev = notes[i-1]
-
-                const x2 = ((prev.start + prev.duration) / totalTime) * canvas.width
-                const y2 =
-                    canvas.height -
-                    ((prev.pitch - minPitch) / pitchRange) * canvas.height
-
-                ctx.strokeStyle = "#ffffff33"
-                ctx.beginPath()
-                ctx.moveTo(x2, y2)
-                ctx.lineTo(x, y)
-                ctx.stroke()
-            }
-
+            ctx.fillStyle = n.hand === "left" ? "#55aaff" : "#ff66cc"
+            ctx.fillRect(x, y, w, h)
         })
 
-        // 🎯 playhead
         const playX = (timeNow / totalTime) * canvas.width
 
         ctx.strokeStyle = "#00ff88"
@@ -245,7 +209,8 @@
             duration: note.duration,
             velocity: note.velocity,
             name: note.name,
-            index: i
+            index: i,
+            hand: note.hand
         }))
 
         part = new Tone.Part((time, noteData)=>{
@@ -257,50 +222,62 @@
                 noteData.velocity
             )
 
-            const i = noteData.index
+            if(noteData.hand === "right"){
 
-            const pitchClass = getPitchClass(noteData.name)
-            const color = NOTE_COLORS[pitchClass] || "white"
+                const rightIndex = analysis.rightHand.findIndex((n) =>
+                    n.start === noteData.time &&
+                    n.pitch === noteData.pitch &&
+                    n.name === noteData.name
+                )
 
-            const currentNoteEl = document.getElementById("currentNote")
-            currentNoteEl.innerText = noteData.name
-            currentNoteEl.style.color = color
+                const pitchClass = getPitchClass(noteData.name)
+                const color = NOTE_COLORS[pitchClass] || "white"
 
-            let intervalText = "-"
+                const currentNoteEl = document.getElementById("currentNote")
+                currentNoteEl.innerText = noteData.name
+                currentNoteEl.style.color = color
 
-            const interval = analysis.intervals[i]
+                let intervalText = "-"
 
-            if(interval){
+                const interval = analysis.intervals[rightIndex]
 
-                const abs = Math.abs(interval.semitones)
-                const simple = abs % 12
+                if(interval){
+                    const abs = Math.abs(interval.semitones)
+                    const simple = abs % 12
 
-                const name =
-                    INTERVAL_NAMES[simple] ||
-                    simple + " semitones"
+                    const name =
+                        INTERVAL_NAMES[simple] ||
+                        simple + " semitones"
 
-                const direction =
-                    interval.semitones > 0 ? "↑" :
-                        interval.semitones < 0 ? "↓" : "-"
+                    const direction =
+                        interval.semitones > 0 ? "↑" :
+                            interval.semitones < 0 ? "↓" : "-"
 
-                intervalText =
-                    direction + " " +
-                    abs +
-                    " (" + name + ", " + interval.type + ")" +
-                    " | vel: " + noteData.velocity.toFixed(2)
+                    intervalText =
+                        direction + " " +
+                        abs +
+                        " (" + name + ", " + interval.type + ")" +
+                        " | vel: " + noteData.velocity.toFixed(2)
 
-            } else {
-                intervalText = "end"
+                } else {
+                    intervalText = "end"
+                }
+
+                document.getElementById("interval").innerText =
+                    intervalText
+
+                addLiveNote(noteData.name, intervalText)
             }
-
-            document.getElementById("interval").innerText =
-                intervalText
-
-            addLiveNote(noteData.name, intervalText)
 
         }, events)
 
+        chordPart = new Tone.Part((time, chordData) => {
+            document.getElementById("currentChord").innerText =
+                chordData.chord.label
+        }, analysis.chords)
+
         part.start(0)
+        chordPart.start(0)
 
         Tone.Transport.scheduleRepeat(() => {
             drawPianoRoll(Tone.Transport.seconds)

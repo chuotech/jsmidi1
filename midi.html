@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-
     <meta charset="UTF-8">
-    <title>MIDI Analyzer Player</title>
+    <title>MIDI Recorder Analyzer</title>
 
     <script src="https://unpkg.com/tone@14.8.49/build/Tone.js"></script>
 
@@ -35,28 +34,69 @@
             margin-top:20px;
             background:#0b0b0b;
         }
+
+        .help{
+            color:#bbb;
+            margin-bottom:20px;
+            line-height:1.6;
+        }
+        #currentChord {
+            font-size: 64px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        #currentNote {
+            font-size: 72px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        #interval {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        #currentChord {
+            font-size: 80px;
+            font-weight: bold;
+        }
+
+        #currentNote {
+            font-size: 100px;
+            font-weight: bold;
+        }
     </style>
-
 </head>
-
 <body>
 
-<h1>MIDI Analyzer</h1>
+<h1>MIDI Analyzer Recorder</h1>
 
-<button onclick="playMidi()">Play</button>
-<button onclick="clearLiveNotes()">Clear</button>
+<button onclick="setupMidiInput()">Connect MIDI Keyboard</button>
+<button onclick="startRecording()">Record</button>
+<button onclick="stopRecording()">Stop</button>
+<button onclick="playAnalysis()">Play Analysis</button>
+<button onclick="clearAll()">Clear</button>
+
+<div class="help">
+    <div><strong>Typing keyboard:</strong> Z S X D C V G B H N J M , for left hand</div>
+    <div><strong>Typing keyboard:</strong> A W S E D F T G Y H U J K for right hand</div>
+    <div>Split point is C4: below C4 = left hand, C4 and above = right hand</div>
+</div>
+
+<h2>Status</h2>
+<div id="status">idle</div>
 
 <h2>Detected Scale</h2>
-<div id="scale">loading...</div>
+<div id="scale">-</div>
+
+<h2>Now Playing (Melody)</h2>
+<div id="currentNote">-</div>
 
 <h2>Current Chord</h2>
 <div id="currentChord">-</div>
 
 <h2>Piano Roll</h2>
 <canvas id="pianoRoll" width="900" height="300"></canvas>
-
-<h2>Now Playing (Melody)</h2>
-<div id="currentNote">-</div>
 
 <h2>Interval</h2>
 <div id="interval">-</div>
@@ -65,13 +105,63 @@
 <div id="liveNotes"></div>
 
 <script>
+    let analysis = null;
 
-    let analysis
-    let synth
-    let part
-    let chordPart
+    let isRecording = false;
+    let recordStartTime = 0;
 
-    const MAX_VISIBLE = 30
+    let heldNotes = new Map();
+    let recordedNotes = [];
+
+    let playbackTimeouts = [];
+    let pressedKeys = new Set();
+
+    let synth = null;
+    let liveSynth = null;
+
+    let isPlaying = false;
+    let playbackStartPerf = 0;
+    let playbackDuration = 0;
+    let animationFrameId = null;
+
+    const MAX_VISIBLE = 30;
+
+    const NOTE_NAMES = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+    const NOTE_NAMES_FANCY = [
+        "C","C#/Db","D","D#/Eb","E","F",
+        "F#/Gb","G","G#/Ab","A","A#/Bb","B"
+    ];
+
+    // no overlapping keys
+    const KEYBOARD_MAP = {
+        "z": 48, // C3
+        "s": 49, // C#3
+        "x": 50, // D3
+        "d": 51, // D#3
+        "c": 52, // E3
+        "v": 53, // F3
+        "g": 54, // F#3
+        "b": 55, // G3
+        "h": 56, // G#3
+        "n": 57, // A3
+        "j": 58, // A#3
+        "m": 59, // B3
+        ",": 60, // C4
+
+        "q": 60, // C4
+        "2": 61, // C#4
+        "w": 62, // D4
+        "3": 63, // D#4
+        "e": 64, // E4
+        "r": 65, // F4
+        "5": 66, // F#4
+        "t": 67, // G4
+        "6": 68, // G#4
+        "y": 69, // A4
+        "7": 70, // A#4
+        "u": 71, // B4
+        "i": 72  // C5
+    };
 
     const NOTE_COLORS = {
         "C": "#ff4d4d",
@@ -86,9 +176,10 @@
         "A": "#ff4da6",
         "A#": "#ff4d73",
         "B": "#ffffff"
-    }
+    };
 
     const INTERVAL_NAMES = {
+        0: "octave",
         1: "minor 2nd",
         2: "major 2nd",
         3: "minor 3rd",
@@ -99,196 +190,575 @@
         8: "minor 6th",
         9: "major 6th",
         10: "minor 7th",
-        11: "major 7th",
-        0: "octave"
-    }
+        11: "major 7th"
+    };
 
-    function getPitchClass(noteName){
-        return noteName.replace(/[0-9]/g, "")
-    }
+    const SCALES = {
+        major: [0,2,4,5,7,9,11],
+        minor: [0,2,3,5,7,8,10]
+    };
 
-    async function loadData(){
-        const res = await fetch("analysis.json?v=" + Date.now())
-        analysis = await res.json()
+    const CHORDS = {
+        major: [0,4,7],
+        minor: [0,3,7],
+        diminished: [0,3,6],
+        augmented: [0,4,8],
+        maj7: [0,4,7,11],
+        min7: [0,3,7,10],
+        dom7: [0,4,7,10]
+    };
 
-        document.getElementById("scale").innerText =
-            analysis.scale.root + " " + analysis.scale.scale
-    }
+    async function initAudio() {
+        await Tone.start();
 
-    function addLiveNote(noteName, text){
-        const container = document.getElementById("liveNotes")
+        if (!synth) {
+            synth = new Tone.PolySynth(Tone.Synth, {
+                maxPolyphony: 64,
+                oscillator: { type: "triangle" },
+                envelope: {
+                    attack: 0.01,
+                    decay: 0.1,
+                    sustain: 0.3,
+                    release: 0.8
+                }
+            }).toDestination();
+        }
 
-        const div = document.createElement("div")
-        div.className = "note current"
-
-        const pitchClass = getPitchClass(noteName)
-        const color = NOTE_COLORS[pitchClass] || "white"
-
-        div.style.color = color
-        div.innerText = noteName + "  |  " + text
-
-        container.prepend(div)
-
-        const notes = container.querySelectorAll(".note")
-        notes.forEach((n,i)=>{
-            if(i !== 0) n.classList.remove("current")
-        })
-
-        if(notes.length > MAX_VISIBLE){
-            container.removeChild(container.lastChild)
+        if (!liveSynth) {
+            liveSynth = new Tone.PolySynth(Tone.Synth, {
+                maxPolyphony: 32,
+                oscillator: { type: "triangle" },
+                envelope: {
+                    attack: 0.01,
+                    decay: 0.08,
+                    sustain: 0.4,
+                    release: 0.5
+                }
+            }).toDestination();
         }
     }
 
-    function clearLiveNotes(){
-        document.getElementById("liveNotes").innerHTML = ""
-        document.getElementById("currentNote").innerText = "-"
-        document.getElementById("interval").innerText = "-"
-        document.getElementById("currentChord").innerText = "-"
+    function midiToName(midi) {
+        const pitchClass = NOTE_NAMES[midi % 12];
+        const octave = Math.floor(midi / 12) - 1;
+        return pitchClass + octave;
     }
 
-    const canvas = document.getElementById("pianoRoll")
-    const ctx = canvas.getContext("2d")
+    function getPitchClass(noteName) {
+        return noteName.replace(/[0-9]/g, "");
+    }
 
-    function drawPianoRoll(timeNow = 0){
+    function statSafe(val) {
+        if (!isFinite(val)) return 0;
+        return Math.max(0, Math.min(1, val));
+    }
 
-        if(!analysis) return
+    function setStatus(text) {
+        document.getElementById("status").innerText = text;
+    }
 
-        ctx.clearRect(0,0,canvas.width,canvas.height)
+    function addLiveNote(noteName, text) {
+        const container = document.getElementById("liveNotes");
 
-        const notes = analysis.notes
+        const div = document.createElement("div");
+        div.className = "note current";
 
-        const minPitch = Math.min(...notes.map(n=>n.pitch))
-        const maxPitch = Math.max(...notes.map(n=>n.pitch))
-        const pitchRange = maxPitch - minPitch + 1
+        const pitchClass = getPitchClass(noteName);
+        const color = NOTE_COLORS[pitchClass] || "white";
 
-        const totalTime = Math.max(...notes.map(n=>n.start + n.duration))
+        div.style.color = color;
+        div.innerText = noteName + "  |  " + text;
 
-        notes.forEach((n)=>{
+        container.prepend(div);
 
-            const x = (n.start / totalTime) * canvas.width
-            const w = Math.max(2, (n.duration / totalTime) * canvas.width)
+        const notes = container.querySelectorAll(".note");
+        notes.forEach((n, i) => {
+            if (i !== 0) n.classList.remove("current");
+        });
+
+        if (notes.length > MAX_VISIBLE) {
+            container.removeChild(container.lastChild);
+        }
+    }
+
+    function stopPlaybackAnimation() {
+        isPlaying = false;
+        if (animationFrameId !== null) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        }
+    }
+
+    function clearPlaybackTimeouts() {
+        playbackTimeouts.forEach(id => clearTimeout(id));
+        playbackTimeouts = [];
+        stopPlaybackAnimation();
+    }
+
+    function startPlaybackAnimation() {
+        if (!analysis || !analysis.notes.length) return;
+
+        playbackDuration = Math.max(...analysis.notes.map(n => n.start + n.duration), 1);
+        playbackStartPerf = performance.now();
+        isPlaying = true;
+
+        function animatePlayback() {
+            if (!isPlaying) return;
+
+            const elapsed = (performance.now() - playbackStartPerf) / 1000;
+            const clamped = Math.min(elapsed, playbackDuration);
+
+            drawPianoRoll(analysis, clamped);
+
+            if (elapsed < playbackDuration) {
+                animationFrameId = requestAnimationFrame(animatePlayback);
+            } else {
+                isPlaying = false;
+                drawPianoRoll(analysis, playbackDuration);
+            }
+        }
+
+        animationFrameId = requestAnimationFrame(animatePlayback);
+    }
+
+    function clearDisplayOnly() {
+        clearPlaybackTimeouts();
+        document.getElementById("scale").innerText = "-";
+        document.getElementById("currentChord").innerText = "-";
+        document.getElementById("currentNote").innerText = "-";
+        document.getElementById("currentNote").style.color = "white";
+        document.getElementById("interval").innerText = "-";
+        document.getElementById("liveNotes").innerHTML = "";
+        drawPianoRoll(null, 0);
+    }
+
+    function clearAll() {
+        isRecording = false;
+        heldNotes.clear();
+        recordedNotes = [];
+        analysis = null;
+        pressedKeys.clear();
+        setStatus("idle");
+        clearDisplayOnly();
+    }
+
+    async function setupMidiInput() {
+        await initAudio();
+
+        if (!navigator.requestMIDIAccess) {
+            alert("Web MIDI is not supported in this browser.");
+            return;
+        }
+
+        try {
+            const midiAccess = await navigator.requestMIDIAccess();
+            let foundInput = false;
+
+            for (const input of midiAccess.inputs.values()) {
+                input.onmidimessage = handleMidiMessage;
+                foundInput = true;
+            }
+
+            midiAccess.onstatechange = () => {
+                for (const input of midiAccess.inputs.values()) {
+                    input.onmidimessage = handleMidiMessage;
+                }
+            };
+
+            if (foundInput) {
+                alert("MIDI keyboard connected.");
+            } else {
+                alert("No MIDI device found.");
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Could not access MIDI devices.");
+        }
+    }
+
+    function handleMidiMessage(event) {
+        const [status, data1, data2] = event.data;
+        const command = status & 0xf0;
+
+        if (command === 0x90 && data2 > 0) {
+            const vel = data2 / 127;
+            if (liveSynth) {
+                liveSynth.triggerAttack(Tone.Frequency(data1, "midi"), undefined, vel);
+            }
+            recordNoteOn(data1, vel);
+        } else if (command === 0x80 || (command === 0x90 && data2 === 0)) {
+            if (liveSynth) {
+                liveSynth.triggerRelease(Tone.Frequency(data1, "midi"));
+            }
+            recordNoteOff(data1);
+        }
+    }
+
+    async function startRecording() {
+        await initAudio();
+        clearDisplayOnly();
+        heldNotes.clear();
+        recordedNotes = [];
+        analysis = null;
+        recordStartTime = performance.now();
+        isRecording = true;
+        setStatus("recording...");
+    }
+
+    function stopRecording() {
+        if (!isRecording) return;
+
+        const now = (performance.now() - recordStartTime) / 1000;
+
+        for (const [pitch, note] of heldNotes.entries()) {
+            recordedNotes.push({
+                pitch: note.pitch,
+                pitchClass: note.pitch % 12,
+                pitchName: NOTE_NAMES[note.pitch % 12],
+                name: note.name,
+                start: note.start,
+                duration: Math.max(0.05, now - note.start),
+                velocity: note.velocity
+            });
+        }
+
+        heldNotes.clear();
+        isRecording = false;
+        setStatus("recording stopped");
+
+        analysis = buildAnalysis(recordedNotes);
+        renderAnalysisSummary();
+        drawPianoRoll(analysis, 0);
+    }
+
+    function recordNoteOn(noteNumber, velocity) {
+        if (!isRecording) return;
+        if (heldNotes.has(noteNumber)) return;
+
+        const now = (performance.now() - recordStartTime) / 1000;
+
+        heldNotes.set(noteNumber, {
+            pitch: noteNumber,
+            name: midiToName(noteNumber),
+            start: now,
+            velocity: velocity
+        });
+    }
+
+    function recordNoteOff(noteNumber) {
+        if (!isRecording) return;
+
+        const note = heldNotes.get(noteNumber);
+        if (!note) return;
+
+        const now = (performance.now() - recordStartTime) / 1000;
+
+        recordedNotes.push({
+            pitch: note.pitch,
+            pitchClass: note.pitch % 12,
+            pitchName: NOTE_NAMES[note.pitch % 12],
+            name: note.name,
+            start: note.start,
+            duration: Math.max(0.05, now - note.start),
+            velocity: note.velocity
+        });
+
+        heldNotes.delete(noteNumber);
+    }
+
+    function detectScale(pitchClasses) {
+        let bestMatch = null;
+        let bestScore = -1;
+
+        for (let root = 0; root < 12; root++) {
+            for (const scaleName in SCALES) {
+                const pattern = SCALES[scaleName];
+                const scaleNotes = pattern.map(i => (i + root) % 12);
+
+                let matches = pitchClasses.filter(pc => scaleNotes.includes(pc)).length;
+                let confidence = pitchClasses.length ? matches / pitchClasses.length : 0;
+
+                if (confidence > bestScore) {
+                    bestScore = confidence;
+                    bestMatch = {
+                        root: NOTE_NAMES_FANCY[root],
+                        scale: scaleName,
+                        scaleNotes: scaleNotes.map(n => NOTE_NAMES[n]),
+                        confidence: statSafe(confidence)
+                    };
+                }
+            }
+        }
+
+        return bestMatch;
+    }
+
+    function chordLabel(root, type) {
+        if (type === "major") return NOTE_NAMES_FANCY[root];
+        if (type === "minor") return NOTE_NAMES_FANCY[root] + "m";
+        if (type === "diminished") return NOTE_NAMES_FANCY[root] + "dim";
+        if (type === "augmented") return NOTE_NAMES_FANCY[root] + "aug";
+        if (type === "maj7") return NOTE_NAMES_FANCY[root] + "maj7";
+        if (type === "min7") return NOTE_NAMES_FANCY[root] + "m7";
+        if (type === "dom7") return NOTE_NAMES_FANCY[root] + "7";
+        return NOTE_NAMES_FANCY[root] + " " + type;
+    }
+
+    function detectChord(pcs) {
+        for (let root = 0; root < 12; root++) {
+            for (const name in CHORDS) {
+                const pattern = CHORDS[name];
+                const chordNotes = pattern.map(i => (i + root) % 12);
+
+                const exactMatch =
+                    chordNotes.length === pcs.length &&
+                    chordNotes.every(n => pcs.includes(n));
+
+                if (exactMatch) {
+                    return {
+                        root: NOTE_NAMES_FANCY[root],
+                        type: name,
+                        notes: chordNotes.map(n => NOTE_NAMES_FANCY[n]),
+                        label: chordLabel(root, name)
+                    };
+                }
+            }
+        }
+        return null;
+    }
+
+    function buildAnalysis(inputNotes) {
+        const notes = [...inputNotes].sort((a, b) => {
+            if (a.start !== b.start) return a.start - b.start;
+            return a.pitch - b.pitch;
+        });
+
+        const splitPoint = 60;
+
+        notes.forEach(n => {
+            n.hand = n.pitch < splitPoint ? "left" : "right";
+        });
+
+        const leftHandNotes = notes.filter(n => n.hand === "left");
+        const rightHandNotes = notes.filter(n => n.hand === "right");
+
+        const intervals = [];
+        for (let i = 0; i < rightHandNotes.length - 1; i++) {
+            const diff = rightHandNotes[i + 1].pitch - rightHandNotes[i].pitch;
+            const absDiff = Math.abs(diff);
+
+            let motionType;
+            if (absDiff === 0) motionType = "repeat";
+            else if (absDiff <= 2) motionType = "step";
+            else motionType = "jump";
+
+            intervals.push({
+                from: rightHandNotes[i].name,
+                to: rightHandNotes[i + 1].name,
+                fromIndex: i,
+                semitones: diff,
+                intervalClass: absDiff % 12,
+                type: motionType,
+                hand: "right"
+            });
+        }
+
+        const pitchClasses = [...new Set(notes.map(n => n.pitchClass))];
+        const detectedScale = detectScale(pitchClasses);
+
+        const chords = [];
+        const TIME_WINDOW = 0.15;
+
+        for (let i = 0; i < leftHandNotes.length; i++) {
+            const group = leftHandNotes.filter(n =>
+                Math.abs(n.start - leftHandNotes[i].start) < TIME_WINDOW
+            );
+
+            const pcs = [...new Set(group.map(n => n.pitchClass))].sort((a, b) => a - b);
+
+            if (pcs.length >= 3) {
+                const chord = detectChord(pcs);
+
+                if (chord) {
+                    const duplicate = chords.some(existing =>
+                        Math.abs(existing.time - leftHandNotes[i].start) < TIME_WINDOW &&
+                        existing.chord.label === chord.label
+                    );
+
+                    if (!duplicate) {
+                        chords.push({
+                            time: leftHandNotes[i].start,
+                            chord
+                        });
+                    }
+                }
+            }
+        }
+
+        return {
+            scale: detectedScale,
+            splitPoint,
+            notes,
+            leftHand: leftHandNotes,
+            rightHand: rightHandNotes,
+            melody: rightHandNotes,
+            intervals,
+            chords
+        };
+    }
+
+    function renderAnalysisSummary() {
+        if (!analysis) return;
+
+        document.getElementById("scale").innerText =
+            analysis.scale
+                ? analysis.scale.root + " " + analysis.scale.scale
+                : "-";
+
+        document.getElementById("currentChord").innerText = "-";
+        document.getElementById("currentNote").innerText = "-";
+        document.getElementById("currentNote").style.color = "white";
+        document.getElementById("interval").innerText = "-";
+        document.getElementById("liveNotes").innerHTML = "";
+    }
+
+    function drawPianoRoll(analysisObj, timeNow = 0) {
+        const canvas = document.getElementById("pianoRoll");
+        const ctx = canvas.getContext("2d");
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (!analysisObj || !analysisObj.notes || analysisObj.notes.length === 0) return;
+
+        const notes = analysisObj.notes;
+
+        const minPitch = Math.min(...notes.map(n => n.pitch));
+        const maxPitch = Math.max(...notes.map(n => n.pitch));
+        const pitchRange = maxPitch - minPitch + 1;
+
+        const totalTime = Math.max(...notes.map(n => n.start + n.duration), 1);
+
+        notes.forEach((n) => {
+            const x = (n.start / totalTime) * canvas.width;
+            const w = Math.max(2, (n.duration / totalTime) * canvas.width);
 
             const y =
                 canvas.height -
-                ((n.pitch - minPitch + 1) / pitchRange) * canvas.height
+                ((n.pitch - minPitch + 1) / pitchRange) * canvas.height;
 
-            const h = Math.max(3, canvas.height / pitchRange)
+            const h = Math.max(3, canvas.height / pitchRange);
 
-            ctx.fillStyle = n.hand === "left" ? "#55aaff" : "#ff66cc"
-            ctx.fillRect(x, y, w, h)
-        })
+            ctx.fillStyle = n.hand === "left" ? "#55aaff" : "#ff66cc";
+            ctx.fillRect(x, y, w, h);
+        });
 
-        const playX = (timeNow / totalTime) * canvas.width
-
-        ctx.strokeStyle = "#00ff88"
-        ctx.beginPath()
-        ctx.moveTo(playX, 0)
-        ctx.lineTo(playX, canvas.height)
-        ctx.stroke()
+        const playX = (timeNow / totalTime) * canvas.width;
+        ctx.strokeStyle = "#00ff88";
+        ctx.beginPath();
+        ctx.moveTo(playX, 0);
+        ctx.lineTo(playX, canvas.height);
+        ctx.stroke();
     }
 
-    async function playMidi(){
-
-        if(!analysis){
-            alert("No analysis loaded")
-            return
+    async function playAnalysis() {
+        if (!analysis || !analysis.notes.length) {
+            alert("No recording to play.");
+            return;
         }
 
-        await Tone.start()
+        await initAudio();
 
-        Tone.Transport.stop()
-        Tone.Transport.cancel()
+        clearPlaybackTimeouts();
+        renderAnalysisSummary();
+        startPlaybackAnimation();
 
-        synth = new Tone.PolySynth(Tone.Synth,{
-            maxPolyphony:64
-        }).toDestination()
+        analysis.notes.forEach((noteData) => {
+            const id = setTimeout(() => {
+                synth.triggerAttackRelease(
+                    Tone.Frequency(noteData.pitch, "midi"),
+                    noteData.duration,
+                    undefined,
+                    noteData.velocity
+                );
 
-        const events = analysis.notes.map((note,i)=>({
-            time: note.start,
-            pitch: note.pitch,
-            duration: note.duration,
-            velocity: note.velocity,
-            name: note.name,
-            index: i,
-            hand: note.hand
-        }))
+                if (noteData.hand === "right") {
+                    const rightIndex = analysis.rightHand.findIndex((n) =>
+                        n.start === noteData.start &&
+                        n.pitch === noteData.pitch &&
+                        n.name === noteData.name
+                    );
 
-        part = new Tone.Part((time, noteData)=>{
+                    const pitchClass = getPitchClass(noteData.name);
+                    const color = NOTE_COLORS[pitchClass] || "white";
 
-            synth.triggerAttackRelease(
-                Tone.Frequency(noteData.pitch,"midi"),
-                noteData.duration,
-                time,
-                noteData.velocity
-            )
+                    const currentNoteEl = document.getElementById("currentNote");
+                    currentNoteEl.innerText = noteData.name;
+                    currentNoteEl.style.color = color;
 
-            if(noteData.hand === "right"){
+                    let intervalText = "-";
+                    const interval = analysis.intervals[rightIndex];
 
-                const rightIndex = analysis.rightHand.findIndex((n) =>
-                    n.start === noteData.time &&
-                    n.pitch === noteData.pitch &&
-                    n.name === noteData.name
-                )
+                    if (interval) {
+                        const abs = Math.abs(interval.semitones);
+                        const simple = abs % 12;
+                        const name = INTERVAL_NAMES[simple] || (simple + " semitones");
+                        const direction =
+                            interval.semitones > 0 ? "↑" :
+                                interval.semitones < 0 ? "↓" : "-";
 
-                const pitchClass = getPitchClass(noteData.name)
-                const color = NOTE_COLORS[pitchClass] || "white"
+                        intervalText =
+                            direction + " " +
+                            abs +
+                            " (" + name + ", " + interval.type + ")" +
+                            " | vel: " + noteData.velocity.toFixed(2);
+                    } else {
+                        intervalText = "end";
+                    }
 
-                const currentNoteEl = document.getElementById("currentNote")
-                currentNoteEl.innerText = noteData.name
-                currentNoteEl.style.color = color
-
-                let intervalText = "-"
-
-                const interval = analysis.intervals[rightIndex]
-
-                if(interval){
-                    const abs = Math.abs(interval.semitones)
-                    const simple = abs % 12
-
-                    const name =
-                        INTERVAL_NAMES[simple] ||
-                        simple + " semitones"
-
-                    const direction =
-                        interval.semitones > 0 ? "↑" :
-                            interval.semitones < 0 ? "↓" : "-"
-
-                    intervalText =
-                        direction + " " +
-                        abs +
-                        " (" + name + ", " + interval.type + ")" +
-                        " | vel: " + noteData.velocity.toFixed(2)
-
-                } else {
-                    intervalText = "end"
+                    document.getElementById("interval").innerText = intervalText;
+                    addLiveNote(noteData.name, intervalText);
                 }
 
-                document.getElementById("interval").innerText =
-                    intervalText
+                const activeChord = analysis.chords
+                    .filter(c => c.time <= noteData.start)
+                    .sort((a, b) => b.time - a.time)[0];
 
-                addLiveNote(noteData.name, intervalText)
-            }
+                document.getElementById("currentChord").innerText =
+                    activeChord ? activeChord.chord.label : "-";
+            }, noteData.start * 1000);
 
-        }, events)
-
-        chordPart = new Tone.Part((time, chordData) => {
-            document.getElementById("currentChord").innerText =
-                chordData.chord.label
-        }, analysis.chords)
-
-        part.start(0)
-        chordPart.start(0)
-
-        Tone.Transport.scheduleRepeat(() => {
-            drawPianoRoll(Tone.Transport.seconds)
-        }, 0.016)
-
-        Tone.Transport.seconds = 0
-        Tone.Transport.start()
+            playbackTimeouts.push(id);
+        });
     }
 
-    loadData()
+    window.addEventListener("keydown", async (event) => {
+        const key = event.key.toLowerCase();
+        if (!(key in KEYBOARD_MAP)) return;
+        if (pressedKeys.has(key)) return;
 
+        await initAudio();
+
+        pressedKeys.add(key);
+        const midiNote = KEYBOARD_MAP[key];
+        const velocity = 100 / 127;
+
+        liveSynth.triggerAttack(Tone.Frequency(midiNote, "midi"), undefined, velocity);
+        recordNoteOn(midiNote, velocity);
+    });
+
+    window.addEventListener("keyup", (event) => {
+        const key = event.key.toLowerCase();
+        if (!(key in KEYBOARD_MAP)) return;
+
+        pressedKeys.delete(key);
+        const midiNote = KEYBOARD_MAP[key];
+
+        if (liveSynth) {
+            liveSynth.triggerRelease(Tone.Frequency(midiNote, "midi"));
+        }
+
+        recordNoteOff(midiNote);
+    });
 </script>
 
 </body>
